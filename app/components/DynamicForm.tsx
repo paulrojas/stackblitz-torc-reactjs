@@ -1,6 +1,7 @@
 "use client"
 
 import { FormEvent, useState } from 'react';
+import styles from './styles.module.css';
 
 type SelectElement = {
   label: string;
@@ -34,6 +35,7 @@ export const DynamicForm = (props: IProps) => {
     if (element.type === 'text' || element.type === 'number') {
       return (
         <input
+          className={styles.element}
           name={name}
           type={type}
           onChange={handleChange}
@@ -42,7 +44,11 @@ export const DynamicForm = (props: IProps) => {
       );
     } else if (element.type === 'select') {
       return (
-        <select name={name} onChange={handleChange} value={formData[name] || ''}>
+        <select
+          className={styles.element}
+          name={name}
+          onChange={handleChange}
+          value={formData[name] || ''}>
           {data?.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
@@ -62,7 +68,7 @@ export const DynamicForm = (props: IProps) => {
   return (
     <form name={name} onSubmit={handleFormSubmit}>
       {fields.map((element) => createElement(element))}
-      <button type="submit">Submit</button>
+      <button className={[styles['btn'], styles['btn-blue']].join(' ')} type="submit">Submit</button>
     </form>
   );
 };
