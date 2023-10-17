@@ -8,6 +8,14 @@ Include a submit button. On submission, display the captured data.
 Ensure a mobile-first, responsive design.
 Employ TypeScript for type definitions and checks
 
+## Testing Online
+This code can be tested from Stackblitz 
+https://stackblitz.com/~/github.com/paulrojas/stackblitz-torc-reactjs
+
+Alternatively, the repository can be cloned from my git account:
+https://github.com/paulrojas/stackblitz-torc-reactjs
+
+I recommend using Stackblitz because it's faster to setup.
 
 ## Technical Specs
 
