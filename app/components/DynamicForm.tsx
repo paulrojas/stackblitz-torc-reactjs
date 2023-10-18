@@ -8,10 +8,14 @@ type SelectElement = {
   value: string | number;
 };
 
+export type FieldElementType = 'TEXT' | 'NUMBER' | 'SELECT';
+
 export type FieldElement = {
   name: string;
-  type: string;
+  type: FieldElementType;
   data?: Array<SelectElement>;
+  label?: string;
+  required?: boolean | undefined;
 };
 
 interface IProps {
@@ -25,36 +29,45 @@ export const DynamicForm = (props: IProps) => {
   const [formData, setFormData] = useState<{ [key: string]: string }>({});
 
   const createElement = (element: FieldElement) => {
-    const { name, type, data } = element;
+    const { name, type, data, label, required } = element;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       const { name, value } = e.target;
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    if (element.type === 'text' || element.type === 'number') {
+    if (element.type === 'TEXT' || element.type === 'NUMBER') {
       return (
-        <input
-          className={styles.element}
-          name={name}
-          type={type}
-          onChange={handleChange}
-          value={formData[name] || ''}
-        />
+        <>
+          {label && <label htmlFor={name}>{label}</label>}
+          <input
+            className={styles.element}
+            name={name}
+            type={type}
+            onChange={handleChange}
+            value={formData[name] || ''}
+            required={required}
+          />
+        </>
       );
-    } else if (element.type === 'select') {
+    } else if (element.type === 'SELECT') {
       return (
-        <select
-          className={styles.element}
-          name={name}
-          onChange={handleChange}
-          value={formData[name] || ''}>
-          {data?.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+        <>
+          {label && <label htmlFor={name}>{label}</label>}
+          <select
+            className={styles.element}
+            name={name}
+            onChange={handleChange}
+            value={formData[name] || ''}
+            required={required}>
+            <option key='' value=''>Select an option</option>
+            {data?.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </>
       );
     }
   };
@@ -66,7 +79,7 @@ export const DynamicForm = (props: IProps) => {
   };
 
   return (
-    <form name={name} onSubmit={handleFormSubmit}>
+    <form name={name} onSubmit={handleFormSubmit} className="min-w-fit">
       {fields.map((element) => createElement(element))}
       <button className={[styles['btn'], styles['btn-blue']].join(' ')} type="submit">Submit</button>
     </form>
